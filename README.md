@@ -1,33 +1,22 @@
-# OCRwatch
-Using OCR to track team performance in Overwatch 2
+# owstats-OCRwatch
+Using [Haylee Schäfer InventivetalentDev](https://github.com/InventivetalentDev) [OCRwatch](https://github.com/InventivetalentDev/OCRwatch) to track and send data to owstats
 
-## How it works
-While this app is running, it listens for key presses of `Tab` and takes a screenshot of the scoreboard if it's held for more than 0.5 seconds.  
-It then applies OCR on that screen, including mode and map info, which hero you're playing and stats of you and other players in your game (kills, deaths, healing, etc.) and saves that data.
+##Summary
+This is repo to hold some modifications done to OCRWatch in order to send the data tracked to the API of owstats, i'll keep this updated with the original repo 
 
-![image](https://user-images.githubusercontent.com/6525296/199619575-3fd903cf-c10d-42b0-882f-e35f388b66b7.png)
+##How it works
+Pretty much the same as the original repo just that when it generates the json it also sends the data to the owstats api if the authorization token and endpoint are setup correctly 
 
+#How to use it
+Ideally you dont have to bother with much i'll keep an archive linked to this repo that contains the exe and a config file, you just need to update the config file with the token from the API and voila
+I will add more details on how to use this locally later...
 
+#Current work item
+* Detect end of game 
+* Detect win/lose/draw
 
-![image](https://user-images.githubusercontent.com/6525296/199619556-92f26629-4d76-48b0-9b1c-aa7aa874069e.png)
+#Roadmap
+* Keep up to date with the original repo
+* Detect more stats
 
-
-
-[Example Dashboard](https://gist.github.com/InventivetalentDev/03b64b8fe516d86cebd2d1f3405c57cc)
-
-## Setup
-```
-pip install -r requirements.txt
-```
-
-Rename `config.example.ini` to `config.ini` and adjust the settings
-
-
-## Usage
-```
-python tracker.py
-```
-
-Launch Overwatch, play some games and remember to press Tab a couple of times! (you're probably doing that anyway)  
-You might want to keep the console window open on a second screen to take a look at the results.  
-Note: this currently only supports 16:9 aspect ratios, since the screen coordinates of the ingame UI elements are based on a 1920x1080 display.
+#ALL CREDITS goes to Haylee Schäfer InventivetalentDev
