@@ -48,9 +48,6 @@ row_padding = 16
 zero_to_nine = "0123456789"
 a_to_z = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-# Mention the installed location of Tesseract-OCR in your system
-pytesseract.pytesseract.tesseract_cmd = 'S:\Program Files\Tesseract-OCR\\tesseract.exe'
-
 # Specify structure shape and kernel size.
 # Kernel size increases or decreases the area
 # of the rectangle to be detected.
@@ -60,6 +57,9 @@ rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
 
 config = configparser.ConfigParser()
 config.read("config.ini")
+
+# Mention the installed location of Tesseract-OCR in your system
+pytesseract.pytesseract.tesseract_cmd = config.get('tesseract','EXE_LOCATION')
 
 
 def crop_top_bottom(img):
