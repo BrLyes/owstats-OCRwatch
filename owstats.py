@@ -15,17 +15,7 @@ headers = {
 'Authorization': HEADER_AUTHORIZATION
 }
 
-# data to be sent to api
-data = {
-'name':"Ashe",
-'kill':9,
-'death':0,
-'assist':0,
-'damage':0,
-'heal':0,
-'mitigate':0,
-'match_date':"2022-12-12",
-		}
+# Response
 r = ""
 
 def send_to_owstats(data):

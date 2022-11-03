@@ -1,5 +1,7 @@
 import configparser
 import csv
+import time
+import datetime
 from datetime import datetime, timedelta
 
 from influxdb_client import InfluxDBClient, Point
@@ -7,6 +9,8 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 from tabulate import tabulate
 
 from util import write_json
+from owstats import send_to_owstats
+from usertimezone import time_to_utc
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -19,6 +23,8 @@ def write_output(result):
         append_to_csv(result)
     if config.getboolean("output", "influx"):
         write_to_influx(result)
+    if config.getboolean("output", "owstats"):
+        write_to_owstats(result)
 
 
 def write_rank(rank, ranks):
@@ -28,6 +34,29 @@ def write_rank(rank, ranks):
 
 def write_to_json(result):
     write_json('latest.json', result)
+
+def write_to_owstats(result):
+    game = []
+
+    #Find the player stats within players.allies
+    for i in range(0, 5):
+        if result["players"]["allies"][i]["name"] == result["self"]["name"]:
+            game = result["players"]["allies"][i]
+
+    #Calculate the match start date and turn it into utc
+    usertmz =time.tzname
+
+    game =  result["players"]["allies"][1]
+    send_to_owstats({
+                    'name': result["self"]["hero"],
+                    'kill':game["elims"],
+                    'death':game["deaths"],
+                    'assist':game["assists"],
+                    'damage':game["dmg"],
+                    'heal':game["heal"],
+                    'mitigate':game["mit"],
+                    'match_date':time_to_utc(),
+                    		})
 
 
 def append_to_csv(result):
