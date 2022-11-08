@@ -71,8 +71,10 @@ def write_to_owstats(result):
         }
         print(payload)
         send_to_owstats(payload)
+        return True
     else :
         print("Unsupported characters "+strCharacterName)
+        return False
 
 
 
