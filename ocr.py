@@ -16,6 +16,8 @@ self_name_start = (170, 950)
 self_name_end = (415, 1000)
 self_hero_start = (1180, 350)
 self_hero_end = (1460, 410)
+portrait_hero_start = (150, 960)
+portrait_hero_end = (350, 1010)
 match_info_start = (120, 30)
 match_info_end = (800, 90)
 
@@ -115,7 +117,6 @@ def process_self_hero(im):
     return {
         "hero": name
     }
-
 
 def process_match_info(im):
     mode_map_img = im[0:mode_height, mode_offset:]
@@ -317,7 +318,37 @@ def process_screenshot(img):
         }
     }
 
-
 def process_screenshot_file(filename):
     img = cv2.imread(filename)
     return process_screenshot(img)
+
+def has_game_ended(filename):
+    img = cv2.imread(filename)
+    return process_screenshot_endgame(img)
+
+#Trying to find out if the game has ended or not
+#Basically the logic here is that when the game ended the player name is not visible in the bottom left corner
+#NOTE!!! This is buggy when the player is jumping since the hug moves around with it and it needs fixing
+def process_screenshot_endgame(img):
+    #Gray out the image
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    debug_image("gray.jpg", gray)
+
+    #Getting the player's name in the protrait (bottom left corner)
+    portrait_name = gray[portrait_hero_start[1]:portrait_hero_end[1], portrait_hero_start[0]:portrait_hero_end[0]]
+    debug_image("portrait_name.jpg", portrait_name)
+    portrait_name = process_player_name_in_portrait(portrait_name)
+    print(portrait_name)
+
+    #If portrait_name does not contain the player's name then the game has ended
+    player_name = config.get('owstats','PLAYER_NAME')
+    return player_name not in portrait_name
+
+
+def process_player_name_in_portrait(im):
+    debug_image(f"portrait_hero.jpg", im)
+
+    name = ocr(im, 0, f"--psm 7 -c load_system_dawg=0 tessedit_char_whitelist={zero_to_nine}", inv=True).replace('\n', '')
+    debug("hero", name)
+
+    return name
