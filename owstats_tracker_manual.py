@@ -92,7 +92,7 @@ def main():
     track_thread = threading.Thread(target=track_loop, args=(stdout_lock,), daemon=True)
     track_thread.start()
 
-    print("Ready for storing stats, press F12 when the game ends to sends your stats!")
+    print("Ready for storing stats, press F12 when the game IS ABOUT TO END to sends your stats!")
     while (cmd_thread.is_alive() or track_thread.is_alive()):
         cmd_thread.join(1)
         track_thread.join(1)
