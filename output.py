@@ -38,26 +38,41 @@ def write_to_json(result):
 def write_to_owstats(result):
     game = []
 
-
     #Find the player stats within players.allies
+    print("looking for")
+    print(result["self"]["name"])
+    print("in")
+    print(result)
     for i in range(0, 5):
         if result["players"]["allies"][i]["name"] == result["self"]["name"]:
             game = result["players"]["allies"][i]
+    print("found game:")
+    print(game)
 
-    game =  result["players"]["allies"][1]
-    if is_character_supported(result["self"]["hero"]):
-        send_to_owstats({
-                'name': result["self"]["hero"],
-                'kill':game["elims"],
-                'death':game["deaths"],
-                'assist':game["assists"],
-                'damage':game["dmg"],
-                'heal':game["heal"],
-                'mitigate':game["mit"],
-                'match_date':time_to_utc(),
-                        })
+    #Get character name and capitalize first letter to pass API validation
+    print("Getting character name and capitalize it")
+    strCharacterName = result["self"]["hero"].capitalize()
+    print(strCharacterName)
+
+    #Check if character is supported
+    print("checking if character is supported by the API")
+    if is_character_supported(strCharacterName):
+        print("Character supported")
+        print("Payload")
+        payload = {
+            'name': strCharacterName,
+            'kill':game["elims"],
+            'death':game["deaths"],
+            'assist':game["assists"],
+            'damage':game["dmg"],
+            'heal':game["heal"],
+            'mitigate':game["mit"],
+            'match_date':time_to_utc(),
+        }
+        print(payload)
+        send_to_owstats(payload)
     else :
-        print("Unsupported characters "+result["self"]["hero"])
+        print("Unsupported characters "+strCharacterName)
 
 
 
