@@ -334,11 +334,24 @@ def process_screenshot_endgame(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     debug_image("gray.jpg", gray)
 
+    #If it's a kill cam then the game has not ended
+
+    #If it's a black screen(loading) or white(spawning) or blue(echo transform)
+    #Then the game has not ended
+
+    #If it's a character select screen
+    #Then the game has not ended
+
+    #If endorse player is showing then the game has ended
+
+
+
     #Getting the player's name in the protrait (bottom left corner)
     portrait_name = gray[portrait_hero_start[1]:portrait_hero_end[1], portrait_hero_start[0]:portrait_hero_end[0]]
     debug_image("portrait_name.jpg", portrait_name)
     portrait_name = process_player_name_in_portrait(portrait_name)
     print(portrait_name)
+
 
     #If portrait_name does not contain the player's name then the game has ended
     player_name = config.get('owstats','PLAYER_NAME')
