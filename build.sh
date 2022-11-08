@@ -1,2 +1,2 @@
 #!/bin/sh
-pyinstaller -c -F ./tracker.py
+pyinstaller -c -F ./owstats_tracker_manual.py
